@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediAlert 🚨</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ─── HEADER ─── -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">🚨 MediAlert</div>
+            <div class="tagline">Real-time hospital finder</div>
+        </div>
+        <a href="tel:108" class="sos-btn">
+            <i class="fas fa-phone"></i> SOS 108
+        </a>
+    </header>
+
+    <!-- ─── LOCATION BAR ─── -->
+    <div class="location-bar">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>Ludhiana, Punjab</span>
+        <span class="live-badge">● LIVE</span>
+    </div>
+
+    <!-- ─── STATS ROW ─── -->
+    <div class="stats-row" id="statsRow">
+        <div class="stat-item">
+            <div class="stat-value" id="totalBeds">--</div>
+            <div class="stat-label">Beds Free</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <div class="stat-value" id="totalICU">--</div>
+            <div class="stat-label">ICU Free</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <div class="stat-value" id="totalOxygen">--</div>
+            <div class="stat-label">O₂ Cylinders</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <div class="stat-value" id="totalDoctors">--</div>
+            <div class="stat-label">Doctors</div>
+        </div>
+    </div>
+
+    <!-- ─── TABS ─── -->
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('hospitals')">
+            <i class="fas fa-hospital"></i> Hospitals
+        </button>
+        <button class="tab" onclick="showTab('ai')">
+            <i class="fas fa-robot"></i> AI Find
+        </button>
+        <button class="tab" onclick="showTab('map')">
+            <i class="fas fa-map"></i> Map
+        </button>
+        <button class="tab" onclick="showTab('update')">
+            <i class="fas fa-edit"></i> Update
+        </button>
+    </div>
+
+    <!-- ─── MAIN CONTENT ─── -->
+    <main class="main-content">
+
+        <!-- HOSPITALS TAB -->
+        <div id="tab-hospitals" class="tab-content active">
+
+            <!-- Filters -->
+            <div class="filter-section">
+                <div class="filter-row">
+                    <select id="filterType" onchange="applyFilters()">
+                        <option value="All">All Types</option>
+                        <option value="Government">Government</option>
+                        <option value="Private">Private</option>
+                    </select>
+                    <select id="filterDistance" onchange="applyFilters()">
+                        <option value="5">Within 5 km</option>
+                        <option value="10">Within 10 km</option>
+                        <option value="15" selected>Within 15 km</option>
+                        <option value="20">Within 20 km</option>
+                    </select>
+                </div>
+                <div class="filter-row">
+                    <label class="filter-chip">
+                        <input type="checkbox" id="filterBeds" onchange="applyFilters()">
+                        🛏️ Beds
+                    </label>
+                    <label class="filter-chip">
+                        <input type="checkbox" id="filterICU" onchange="applyFilters()">
+                        🏥 ICU
+                    </label>
+                    <label class="filter-chip">
+                        <input type="checkbox" id="filterOxygen" onchange="applyFilters()">
+                        🫁 Oxygen
+                    </label>
+                    <label class="filter-chip">
+                        <input type="checkbox" id="filter24h" onchange="applyFilters()">
+                        ⏰ 24h
+                    </label>
+                </div>
+                <!-- Blood type filter -->
+                <div class="blood-filters">
+                    <div class="blood-label">🩸 Blood Type:</div>
+                    <div class="blood-chips">
+                        <label class="filter-chip" id="chip-A+"><input type="checkbox" value="A+" onchange="applyFilters()"> A+</label>
+                        <label class="filter-chip" id="chip-A-"><input type="checkbox" value="A-" onchange="applyFilters()"> A-</label>
+                        <label class="filter-chip" id="chip-B+"><input type="checkbox" value="B+" onchange="applyFilters()"> B+</label>
+                        <label class="filter-chip" id="chip-B-"><input type="checkbox" value="B-" onchange="applyFilters()"> B-</label>
+                        <label class="filter-chip" id="chip-O+"><input type="checkbox" value="O+" onchange="applyFilters()"> O+</label>
+                        <label class="filter-chip" id="chip-O-"><input type="checkbox" value="O-" onchange="applyFilters()"> O-</label>
+                        <label class="filter-chip" id="chip-AB+"><input type="checkbox" value="AB+" onchange="applyFilters()"> AB+</label>
+                        <label class="filter-chip" id="chip-AB-"><input type="checkbox" value="AB-" onchange="applyFilters()"> AB-</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results count -->
+            <div class="results-count" id="resultsCount"></div>
+
+            <!-- Hospital cards -->
+            <div id="hospitalList"></div>
+        </div>
+
+        <!-- AI TAB -->
+        <div id="tab-ai" class="tab-content">
+            <div class="ai-section">
+                <div class="ai-header">
+                    <div class="ai-icon">🤖</div>
+                    <h2>AI Emergency Recommender</h2>
+                    <p>Tell us your emergency and we'll find the best hospital instantly</p>
+                </div>
+
+                <div class="form-group">
+                    <label>🚨 Emergency Type</label>
+                    <select id="emergencyType">
+                        <option>Cardiac Arrest</option>
+                        <option>Road Accident</option>
+                        <option>Breathing Problem</option>
+                        <option>Brain / Neuro</option>
+                        <option>Child Emergency</option>
+                        <option>General Emergency</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>📏 Max Distance: <span id="distanceVal">10</span> km</label>
+                    <input type="range" id="aiDistance" min="1" max="20" value="10"
+                        oninput="document.getElementById('distanceVal').textContent=this.value">
+                </div>
+
+                <button class="primary-btn" onclick="findBestHospital()">
+                    <i class="fas fa-search"></i> Find Best Hospital
+                </button>
+
+                <div id="aiResult"></div>
+            </div>
+        </div>
+
+        <!-- MAP TAB -->
+        <div id="tab-map" class="tab-content">
+            <div id="map"></div>
+        </div>
+
+        <!-- UPDATE TAB -->
+        <div id="tab-update" class="tab-content">
+            <div class="update-section">
+                <h2>🔄 Hospital Update Panel</h2>
+                <p>Staff login required to update data</p>
+
+                <!-- Login -->
+                <div id="loginSection">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="username" placeholder="Enter username">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="password" placeholder="Enter password">
+                    </div>
+                    <button class="primary-btn" onclick="login()">
+                        🔑 Login
+                    </button>
+                    <div id="loginError" class="error-msg"></div>
+                </div>
+
+                <!-- Update form (hidden until login) -->
+                <div id="updateSection" style="display:none">
+                    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+                    <div class="form-group">
+                        <label>Select Hospital</label>
+                        <select id="updateHospital" onchange="loadHospitalData()"></select>
+                    </div>
+                    <div class="update-grid" id="updateForm"></div>
+                    <button class="primary-btn" onclick="saveUpdate()">
+                        ✅ Save Updates
+                    </button>
+                    <div id="updateMsg"></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Leaflet map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
