@@ -15,6 +15,134 @@ body {
     min-height: 100vh;
 }
 
+/* ─── RESPONSIVE — TABLET ─── */
+@media (min-width: 768px) {
+    body {
+        max-width: 720px;
+    }
+
+    .resource-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .filter-row {
+        flex-wrap: nowrap;
+    }
+
+    .card-actions {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ─── RESPONSIVE — LAPTOP/DESKTOP ─── */
+@media (min-width: 1024px) {
+    body {
+        max-width: 1100px;
+    }
+
+    /* Two column layout on desktop */
+    .main-content {
+        padding: 20px 24px;
+    }
+
+    /* Hospital cards in 2 columns */
+    #hospitalList {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    #hospitalList .hospital-card {
+        margin-bottom: 0;
+    }
+
+    /* Header bigger on desktop */
+    .logo {
+        font-size: 28px;
+    }
+
+    .tagline {
+        font-size: 13px;
+    }
+
+    .sos-btn {
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+
+    /* Stats row bigger */
+    .stat-value {
+        font-size: 32px;
+    }
+
+    .stat-label {
+        font-size: 12px;
+    }
+
+    /* Tabs wider */
+    .tab {
+        font-size: 13px;
+        padding: 14px 8px;
+    }
+
+    .tab i {
+        font-size: 18px;
+    }
+
+    /* Filters in one row */
+    .filter-section {
+        padding: 20px;
+    }
+
+    .filter-row {
+        flex-wrap: nowrap;
+        gap: 12px;
+    }
+
+    /* AI section wider */
+    .ai-section {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* Map taller on desktop */
+    #map {
+        height: 600px;
+    }
+
+    /* Update section centered */
+    .update-section {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* Hospital name bigger */
+    .hospital-name {
+        font-size: 17px;
+    }
+
+    /* Resource values bigger */
+    .resource-value {
+        font-size: 24px;
+    }
+
+    .resource-label {
+        font-size: 10px;
+    }
+}
+
+/* ─── RESPONSIVE — LARGE DESKTOP ─── */
+@media (min-width: 1400px) {
+    body {
+        max-width: 1300px;
+    }
+
+    /* 3 columns on large screens */
+    #hospitalList {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
 /* ─── HEADER ─── */
 .header {
     background: linear-gradient(135deg, #e63946, #c1121f);
