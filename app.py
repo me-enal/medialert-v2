@@ -191,6 +191,8 @@ def recommend():
     emergency = data.get('emergency_type')
     max_dist = data.get('max_distance', 15)
 
+
+
     WEIGHTS = {
         "Cardiac Arrest": {"beds": 0.2, "icu": 0.4, "doctors": 0.3, "oxygen": 0.1, "spec": "Cardiology"},
         "Road Accident": {"beds": 0.3, "icu": 0.3, "doctors": 0.3, "oxygen": 0.1, "spec": "Trauma"},
@@ -230,4 +232,4 @@ def recommend():
 # RUN APP
 # ─────────────────────────────────────────
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False, use_reloader=False)
